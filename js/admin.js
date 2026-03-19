@@ -132,43 +132,31 @@ async function loadAdminItems() {
         .order('created_at', { ascending: false });
 
     if (error) {
-        container.innerHTML = `
-Error loading items.
-`;
+        container.innerHTML = `<p style="color:#ff3b30;">Error loading items.</p>`;
         return;
     }
 
     if (!data || data.length === 0) {
-        container.innerHTML = `
-No items yet. Add your first item above!
-`;
+        container.innerHTML = `<p style="color:var(--text-muted);">No items yet. Add your first item above!</p>`;
         return;
     }
 
     container.innerHTML = data.map(item => `
-        
-
+        <div class="admin-card">
             ${item.image_url
-                ? ``
-                : `
-📦
-`
+                ? `<img class="admin-card-image" src="${item.image_url}" alt="${escapeHtml(item.name)}">`
+                : `<div class="admin-card-image" style="background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:2rem;color:var(--text-muted);">&#128230;</div>`
             }
-            
-
-                
-${escapeHtml(item.name)}
-                
-${escapeHtml(item.description || 'No description')}
-                
-LKR ${Number(item.price).toFixed(2)} · Qty: ${item.quantity}
-            
-            
-
-                Edit
-                Delete
-            
-        
+            <div class="admin-card-body">
+                <h4>${escapeHtml(item.name)}</h4>
+                <p>${escapeHtml(item.description || 'No description')}</p>
+                <p><strong>LKR ${Number(item.price).toFixed(2)}</strong> &middot; Qty: ${item.quantity}</p>
+            </div>
+            <div class="admin-card-actions">
+                <button class="btn btn-small btn-outline" onclick='editItem(${JSON.stringify(item).replace(/'/g, "&#39;")})'>Edit</button>
+                <button class="btn btn-small btn-danger" onclick="deleteItem('${item.id}')">Delete</button>
+            </div>
+        </div>
     `).join('');
 }
 
