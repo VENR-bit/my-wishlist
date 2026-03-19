@@ -28,11 +28,8 @@ async function loadWishlist() {
         window._wishlistData = data;
         renderCards(data);
     } catch (err) {
-        grid.innerHTML = `
-
-            Failed to load wishlist. Check your Supabase config.
-
-`;
+        grid.innerHTML = `<p style="grid-column:1/-1;text-align:center;color:#ff3b30;">
+            Failed to load wishlist. Check your Supabase config.</p>`;
         console.error(err);
     }
 }
@@ -51,27 +48,20 @@ function renderCards(items) {
     emptyState.style.display = 'none';
 
     grid.innerHTML = items.map(item => `
-        
-
+        <div class="card">
             ${item.image_url
-                ? ``
-                : `
-📦
-`
+                ? `<img class="card-image" src="${item.image_url}" alt="${escapeHtml(item.name)}" loading="lazy">`
+                : `<div class="card-image placeholder">&#128230;</div>`
             }
-            
-
-                
-${escapeHtml(item.name)}
-                
-${escapeHtml(item.description || '')}
-                
-
-                    LKR ${Number(item.price).toFixed(2)}
-                    Qty: ${item.quantity}
-                
-            
-        
+            <div class="card-body">
+                <h3 class="card-title">${escapeHtml(item.name)}</h3>
+                <p class="card-description">${escapeHtml(item.description || '')}</p>
+                <div class="card-footer">
+                    <span class="card-price">LKR ${Number(item.price).toFixed(2)}</span>
+                    <span class="card-qty">Qty: ${item.quantity}</span>
+                </div>
+            </div>
+        </div>
     `).join('');
 }
 
