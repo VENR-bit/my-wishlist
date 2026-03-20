@@ -150,7 +150,7 @@ async function loadAdminItems() {
             <div class="admin-card-body">
                 <h4>${escapeHtml(item.name)}</h4>
                 <p>${escapeHtml(item.description || 'No description')}</p>
-                <p><strong>LKR ${Number(item.price).toFixed(2)}</strong> &middot; Qty: ${item.quantity}</p>
+                <p><strong>LKR ${Number(item.price).toFixed(2)}</strong> &times; ${item.quantity} = <strong style="color:var(--accent);">LKR ${(Number(item.price) * (Number(item.quantity) || 1)).toFixed(2)}</strong></p>
             </div>
             <div class="admin-card-actions">
                 <button class="btn btn-small btn-outline" onclick='editItem(${JSON.stringify(item).replace(/'/g, "&#39;")})'>Edit</button>
