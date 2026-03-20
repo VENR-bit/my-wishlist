@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rideekanda Forest Monastery</title>
+    <title>My Wishlist</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <header>
         <div class="container">
-            <h1>Rideekanda Forest Monastery</h1>
-            <p class="subtitle">Required items for the Monastery</p>
+            <h1>My Wishlist</h1>
+            <p class="subtitle">Things I'd love to have</p>
             <a href="admin.html" class="admin-link" title="Admin">&#9881;</a>
         </div>
     </header>
+
     <main class="container">
         <div class="filters">
             <input type="text" id="searchInput" placeholder="Search items..." class="search-box">
@@ -24,21 +25,40 @@
                 <option value="name">Name A-Z</option>
             </select>
         </div>
+
+        <div id="grand-total-summary" class="grand-total-summary" style="display:none;">
+            <div class="summary-item">
+                <span class="summary-label">Items</span>
+                <span class="summary-value" id="summary-items-count">0</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Total Qty</span>
+                <span class="summary-value" id="summary-qty-count">0</span>
+            </div>
+            <div class="summary-item summary-total">
+                <span class="summary-label">Grand Total</span>
+                <span class="summary-value" id="summary-grand-total">LKR 0.00</span>
+            </div>
+        </div>
+
         <div id="wishlist-grid" class="wishlist-grid">
             <div class="loading-spinner">
                 <div class="spinner"></div>
-                <p>Loading items...</p>
+                <p>Loading wishlist...</p>
             </div>
         </div>
+
         <div id="empty-state" class="empty-state" style="display:none;">
-            <p>No items in the requirement list yet.</p>
+            <p>No items in the wishlist yet.</p>
         </div>
     </main>
+
     <footer>
         <div class="container">
             <p>Powered by Supabase &amp; GitHub Pages</p>
         </div>
     </footer>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/config.js"></script>
     <script src="js/app.js"></script>
