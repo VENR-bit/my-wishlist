@@ -47,7 +47,11 @@ function renderCards(items) {
     grid.style.display = 'grid';
     emptyState.style.display = 'none';
 
-    grid.innerHTML = items.map(item => `
+    grid.innerHTML = items.map(item => {
+        const unitPrice = Number(item.price);
+        const qty = Number(item.quantity) || 1;
+        const totalCost = unitPrice * qty;
+        return `
         <div class="card">
             ${item.image_url
                 ? `<img class="card-image" src="${item.image_url}" alt="${escapeHtml(item.name)}" loading="lazy">`
@@ -56,13 +60,26 @@ function renderCards(items) {
             <div class="card-body">
                 <h3 class="card-title">${escapeHtml(item.name)}</h3>
                 <p class="card-description">${escapeHtml(item.description || '')}</p>
-                <div class="card-footer">
-                    <span class="card-price">LKR ${Number(item.price).toFixed(2)}</span>
-                    <span class="card-qty">Qty: ${item.quantity}</span>
+                <div class="card-pricing">
+                    <div class="pricing-row">
+                        <span class="pricing-label">Unit Price</span>
+                        <span class="pricing-value">LKR ${unitPrice.toFixed(2)}</span>
+                    </div>
+                    <div class="pricing-row">
+                        <span class="pricing-label">Quantity</span>
+                        <span class="pricing-value">${qty}</span>
+                    </div>
+                    <div class="pricing-row pricing-total">
+                        <span class="pricing-label">Total</span>
+                        <span class="pricing-value">LKR ${totalCost.toFixed(2)}</span>
+                    </div>
                 </div>
             </div>
         </div>
-    `).join('');
+    `}).join('');
+
+    // Update grand total summary
+    updateGrandTotal(items);
 }
 
 // ===== Search & Sort =====
@@ -106,6 +123,28 @@ function applyFilters() {
     }
 
     renderCards(items);
+}
+
+// ===== Grand Total =====
+function updateGrandTotal(items) {
+    const summaryEl = document.getElementById('grand-total-summary');
+    if (!summaryEl) return;
+
+    if (!items || items.length === 0) {
+        summaryEl.style.display = 'none';
+        return;
+    }
+
+    const totalItems = items.reduce((sum, item) => sum + (Number(item.quantity) || 1), 0);
+    const grandTotal = items.reduce((sum, item) => {
+        const qty = Number(item.quantity) || 1;
+        return sum + (Number(item.price) * qty);
+    }, 0);
+
+    document.getElementById('summary-items-count').textContent = items.length;
+    document.getElementById('summary-qty-count').textContent = totalItems;
+    document.getElementById('summary-grand-total').textContent = `LKR ${grandTotal.toFixed(2)}`;
+    summaryEl.style.display = 'flex';
 }
 
 // ===== Utility =====
